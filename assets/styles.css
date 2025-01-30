@@ -1,0 +1,278 @@
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+splitviews1 {
+    height: 100%;
+    min-width: 275px;
+    background-color: #f8f8f8;
+    border-right: 1px solid #e4e4e7;
+    overflow: auto;
+}
+
+splitviews2 {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    overflow: auto;
+}
+
+p {
+    font-family: Figtree;
+}
+
+navview {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    overflow: auto;
+}
+
+tabviewbg {
+    max-height: 100%;
+    min-height: 100%;
+    width: 100%;
+    margin: 0px !important;
+    padding: 0px !important;
+    background-color: white;
+}
+
+tabviewtab {
+    min-height: calc(100% - 71px);
+    max-height: calc(100% - 71px);
+    overflow:auto;
+    width: 100%;
+    margin: 0px !important;
+    padding: 0px !important;
+    background-color: white;
+    display: none;
+}
+
+tabviewbar {
+    height: 70px;
+    width: calc(100% - 30px);
+    background-color: white;
+    border-top: 1px solid #e4e4e7;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#mainview {
+    margin: 0px;
+}
+
+hstack {
+    display: flex;
+    flex-direction: row;
+}
+
+innerpaddingnode {
+    margin-left: 25px;
+    margin-right: 25px;
+    width: calc(100% - 50px);
+    overflow: auto;
+    display: block;
+}
+
+splitview {
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    color: #666666;
+    user-select: none;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+udtitle {
+    font-size: 30px;
+    font-weight: 600;
+    font-family: Figtree;
+    margin-left: 25px;
+    margin-top: 60px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+udtitlemin {
+    font-size: 16px;
+    font-family: Figtree;
+    margin-left: 25px;
+    margin-top: 20px;
+    display: block;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+udtitlecenter {
+    font-size: 16px;
+    font-family: Figtree;
+    margin-top: 20px;
+    display: block;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+udnavitemex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 25px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.udnavitemexhti {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 0px;
+    cursor: pointer;
+}
+
+.udnavitemexver {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 0px;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.textnodenomargin {
+    margin: 0px !important;
+}
+
+udbuttonfilled {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    width: fit-content;
+    cursor: pointer;
+    background-color: rgb(3, 203, 136);
+    border-radius: 10px;
+    color: white;
+}
+
+udbuttontext {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 16px;
+    font-family: Figtree;
+    display: block;
+    color: white;
+}
+
+udnavitemextext {
+    padding-left: 15px;
+    font-size: 16px;
+    font-family: Figtree;
+    display: block;
+}
+
+.udnavitemextextver {
+    padding-left: 0px;
+    font-size: 15px;
+    font-family: Figtree;
+    display: block;
+}
+
+[textstyle="paragraph"] {
+    font-family: Figtree;
+}
+
+[textstyle="h3"] {
+    font-family: Figtree;
+    font-size: 22px !important;
+    font-weight: 500;
+}
+
+[textstyle="h2"] {
+    font-family: Figtree;
+    font-size: 25px !important;
+    font-weight: 500;
+}
+
+[textstyle="h1"] {
+    font-family: Figtree;
+    font-size: 28px !important;
+    font-weight: 500;
+}
+
+[textstyle="listsection"] {
+    font-family: Figtree;
+    margin-top: 25px;
+    margin-left: 25px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+@media only screen and (max-width: 600px) {
+    splitviews1 {
+        max-height: 100%;
+        min-width: 100%;
+        background-color: #eeeeee;
+        border-right: 1px solid #e4e4e7;
+        position: absolute;
+    }
+    splitview {
+        position: relative;
+        overflow: hidden;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+    splitviews2 {
+        position: absolute;
+        left: 100vw;
+    }
+    listsectioninner {
+        padding: 15px;
+        padding-bottom: 1px;
+        background-color: white;
+        margin-left: 25px;
+        display: block;
+        margin-right: 25px;
+        border-radius: 15px;
+    }
+    listsectioninner udnavitemex {
+        margin: 0;
+        margin-bottom: 14px;
+    }
+    listsectioninner udnavitemex:not(:last-child) {
+        border-bottom: 1px solid #e4e4e7;
+        padding-bottom: 14px;
+    }
+}
+
+listsectioninner:empty {
+    display: none;
+}
+
+.CollabKitMousePointer {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background-color: #d0d0d0;
+    border-radius: 100px;
+}
+  

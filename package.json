@@ -1,0 +1,16 @@
+{
+  "name": "uidraw",
+  "version": "1.0.0",
+  "description": "UIDraw Framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1",
+    "socketio": "^1.0.0"
+  }
+}
