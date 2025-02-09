@@ -10,6 +10,11 @@ var views = {
                 name: "Download",
                 icon: "download",
                 view: () => {views.DownloadView.render()}
+            },
+            {
+                name: "Anchor",
+                icon: "anchor",
+                view: () => {views.AnchorDemoView.render()}
             }
         ])
     }),
@@ -91,7 +96,38 @@ var views = {
             })
         })
         .title("Download")
+    }),
+    AnchorDemoView: new UIDrawView(() => {
+        UDNavView(() => {
+            UDInnerPadding(() => {
+                demoanchor = UDAnchorPoint(() => {
+                    UDTextNode(counter2.content)
+                        .type("h3")
+                })
+                    .bindstate(counter2)
+                // counter2.bindelement(demoanchor)
+                // UDButton("Increase", "arrow-up")
+                //     .onclick(() => {
+                //         // counter += 1
+                //         // demoanchor.render()
+                //         counter2.update(counter2.content + 1)
+                //     })
+                // UDButton("Decrease", "arrow-down")
+                //     .onclick(() => {
+                //         // counter -= 1
+                //         // demoanchor.render()
+                //         counter2.update(counter2.content - 1)
+                //     })
+                // demoanchor.render()
+                UDTextBox("test")
+                    .bindstate(counter2)
+            })
+        })
+        .title("Anchor Demo")
+        .titlestyle("min")
     })
 }
 
+counter = 0
+counter2 = StateVar("test")
 views.MainLayout.render()

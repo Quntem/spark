@@ -15,3 +15,11 @@ sparkbe.serverfunction("files", (sf) => {
         }
     })
 })
+
+sparkbe.serverfunction("slowres", (sf) => {
+    setTimeout(() => {
+        sf.response.SendJson({
+            "completed": true
+        })
+    }, 3000);
+})

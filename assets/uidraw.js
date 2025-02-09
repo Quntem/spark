@@ -69,6 +69,30 @@ function UDVerStack(el) {
     }
 }
 
+function UDAnchorPoint(el) {
+    if(this instanceof UDAnchorPoint) {
+        this.el = el
+        this.oldrc = rendercontext
+        this.selfcont = document.createElement("vstack")
+        rendercontext = this.selfcont
+        this.oldrc.append(this.selfcont)
+        this.udcode = el
+        this.render = function() {
+            this.oldrc = rendercontext
+            rendercontext = this.selfcont
+            rendercontext.innerHTML = ""
+            this.udcode()
+            rendercontext = this.oldrc
+        }
+        this.bindstate = function(statevar) {
+            statevar.bindelement(this)
+        }
+        rendercontext = this.oldrc
+    } else {
+        return new UDAnchorPoint(el);
+    }
+}
+
 function UDInnerPadding(el) {
     if(this instanceof UDInnerPadding) {
         this.el = el
@@ -398,6 +422,28 @@ function UDButton(text, icon) {
     }
 }
 
+function UDTextBox(placeholder) {
+    if(this instanceof UDTextBox) {
+        this.placeholder = placeholder
+        this.element = document.createElement("input")
+        this.element.setAttribute("placeholder", this.placeholder)
+        rendercontext.append(this.element)
+        this.onchange = function(fn) {
+            console.log("onchange is now set")
+            this.element.addEventListener("change", fn)
+            return this
+        }
+        this.bindstate = function(statevar) {
+            this.bindedvar = statevar
+            this.element.addEventListener("keydown", () => {
+                statevar.update(this.element.value)
+            })
+        }
+    } else {
+        return new UDTextBox(placeholder);
+    }
+}
+
 function UDIconNode(icon) {
     if(this instanceof UDIconNode) {
         this.iconcontent = icon
@@ -524,5 +570,25 @@ var sparkutils = {
             json = await res.json()
             return json
         }
+    }
+}
+
+function StateVar(content) {
+    if(this instanceof StateVar) {
+        this.content = content
+        this.boundlist = [
+
+        ]
+        this.bindelement = function(el) {
+            this.boundlist.push(el)
+        }
+        this.update = function(content) {
+            this.content = content
+            this.boundlist.forEach(el => {
+                el.render()
+            })
+        }
+    } else {
+        return new StateVar(content);
     }
 }
