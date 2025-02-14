@@ -121,6 +121,20 @@ var views = {
                 // demoanchor.render()
                 UDTextBox("test")
                     .bindstate(counter2)
+                UDPopOver(() => {
+                    UDNavView(() => {
+                        UDButton("hide", "star")
+                            .onclick(() => {
+                                showpopover.update(false)
+                            })
+                    })
+                        .title("popover title")
+                        .titlestyle("center")
+                }, showpopover)
+                UDButton("show", "star")
+                    .onclick(() => {
+                        showpopover.update(true)
+                    })
             })
         })
         .title("Anchor Demo")
@@ -130,4 +144,5 @@ var views = {
 
 counter = 0
 counter2 = StateVar("test")
+showpopover = StateVar(false)
 views.MainLayout.render()

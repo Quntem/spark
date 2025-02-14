@@ -2,6 +2,28 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+popover {
+    height: 100dvh;
+    width: 100vw;
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    background-color: #0000009c;
+}
+
+@media only screen and (min-width: 601px) {
+    popovercontent {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70vw;
+        height: 70vh;
+        background-color: white;
+        border-radius: 10px;
+    }
+}
+
 splitviews1 {
     height: 100%;
     min-width: 275px;
@@ -261,6 +283,15 @@ udnavitemextext {
     listsectioninner udnavitemex:not(:last-child) {
         border-bottom: 1px solid #e4e4e7;
         padding-bottom: 14px;
+    }
+    popovercontent {
+        position: fixed;
+        bottom: 0px;
+        width: 100vw;
+        height: 90vh;
+        background-color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
     }
 }
 

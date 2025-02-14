@@ -107,6 +107,36 @@ function UDInnerPadding(el) {
     }
 }
 
+
+function UDPopOver(el, binding) {
+    if(this instanceof UDPopOver) {
+        this.el = el
+        this.binding = binding
+        binding.bindelement(this)
+        this.oldrc = rendercontext
+        this.selfcont = document.createElement("popover")
+        this.selfinner = document.createElement("popovercontent")
+        rendercontext = this.selfcont
+        rendercontext.append(this.selfinner)
+        rendercontext = this.selfinner
+        this.oldrc.append(this.selfcont)
+        this.el()
+        rendercontext = this.oldrc
+        $(this.selfcont).hide()
+        this.render = function() {
+            // console.log(this.binding)
+            if (this.binding.content == true) {
+                $(this.selfcont).show()
+            } else {
+                $(this.selfcont).hide()
+            }
+        }
+    } else {
+        return new UDPopOver(el, binding);
+    }
+}
+
+
 function UDHorStack(el) {
     if(this instanceof UDHorStack) {
         this.el = el
