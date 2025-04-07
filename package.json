@@ -1,7 +1,7 @@
 {
-  "name": "uidraw",
+  "name": "Spark Framework",
   "version": "1.0.0",
-  "description": "UIDraw Framework",
+  "description": "This is a project created with the Spark Framework",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
