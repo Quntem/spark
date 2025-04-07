@@ -598,7 +598,7 @@ var sparkutils = {
     },
     serverfunctions: {
         call: async function(name, input) {
-            res = await fetch("/serverfunction/" + name)
+            res = await fetch("serverfunction/" + name)
             json = await res.json()
             return json
         }
