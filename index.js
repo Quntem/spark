@@ -22,8 +22,25 @@ var sparkbe = {
     }
 }
 
-const code = fs.readFileSync('./src/backend/api.js', 'utf8');
-eval(code);
+var loadServerFunctions = function() {
+    serverfunctions = [
+    
+    ]
+
+    const befolder = fs.readdirSync("./src/backend")
+
+    befolder.forEach(item => {
+        code = fs.readFileSync('./src/backend/' + item, 'utf8');
+        eval(code);
+    })
+}
+
+loadServerFunctions()
+
+fs.watch(("./src/backend"), (eventType, fileName) => {
+    console.log(fileName + " was modified: reloading server functions")
+    loadServerFunctions()
+})
 
 app.get("/serverfunction/:fnname", (req, res) => {
     fnname = req.params.fnname

@@ -599,8 +599,14 @@ var sparkutils = {
     serverfunctions: {
         call: async function(name, input) {
             res = await fetch("serverfunction/" + name)
-            json = await res.json()
-            return json
+            var resdata = ""
+            resdatatxt = await res.text()
+            try {
+                resdata = JSON.parse(resdatatxt)
+            } catch {
+                resdata = resdata
+            }
+            return resdata
         }
     }
 }
