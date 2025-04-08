@@ -1,5 +1,5 @@
 # Intro
-This page will introduce the basics of UIDraw and Spark Framework
+This page will introduce the basics of UIDraw and Spark Framework.
   
 ## UIDraw
 UIDraw is a simple way to create UI without any complexity. It is designed to be simlar to SwiftUI, but it is not exactly the same. Below is an example snippet.
@@ -91,4 +91,7 @@ window.onload = async () => {
 }
 ```
 Spark Framework makes it easier to get started with web development because it provides an easy to understand relationship between the client and server.  
-this repo also contains collabKit, an easy way to add live cursors to your UIDraw app
+this repo also contains collabKit, an easy way to add live cursors to your UIDraw app.
+
+## Installation
+Create a new project with the Spark Framework by using ```npx create-spark-app```.
