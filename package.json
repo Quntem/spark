@@ -1,10 +1,10 @@
 {
-  "name": "uidraw",
+  "name": "Spark Framework",
   "version": "1.0.0",
-  "description": "UIDraw Framework",
+  "description": "This is a project created with the Spark Framework",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,5 +12,8 @@
     "express": "^4.21.2",
     "socket.io": "^4.8.1",
     "socketio": "^1.0.0"
+  },
+  "spark": {
+    "projtype": "UIDraw"
   }
 }
