@@ -307,30 +307,16 @@ function UDNavView(v) {
         this.title = function(title) {
             console.log("title is now " + title)
             this.titletext = title
-            this.titleel = document.createElement("udtitle")
-            this.titleel.innerHTML = title
-            this.titleel.setAttribute("style", "color: #666666;")
+            this.titleel = document.createElement("div")
+            this.oldrc = rendercontext
+            rendercontext = this.titleel
+            this.header = UDHeader(title)
+            rendercontext = this.oldrc
             this.contentel.prepend(this.titleel)
             return this
         }
         this.titlestyle = function(title) {
-            if (title == "expanded") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitle")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-            } else if (title == "min") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitlemin")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-            } else if (title == "center") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitlecenter")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-            }
-            this.contentel.prepend(this.titleel)
+            this.header.headerstyle(title)
             return this
         }
         this.background = function(col) {
@@ -349,6 +335,69 @@ function UDNavView(v) {
     }
 }
 
+function UDHeader(text) {
+    if(this instanceof UDHeader) {
+        this.headertitle = text
+        this.oldrc = rendercontext
+        this.element = document.createElement("udheader")
+        this.titleel = document.createElement("udtitle")
+        this.headerrow = document.createElement("udheaderrow")
+        this.largetitleholder = document.createElement("udlargetitleholder")
+        this.titleholder = document.createElement("udtitleholder")
+        this.leadingelement = document.createElement("udheaderleading")
+        this.titleel.innerText = this.headertitle
+        this.headerrow.append(this.leadingelement)
+        this.headerrow.append(this.titleholder)
+        this.element.append(this.headerrow)
+        this.largetitleholder.append(this.titleel)
+        this.element.append(this.largetitleholder)
+        rendercontext = this.element
+        this.oldrc.append(this.element)
+        rendercontext = this.oldrc
+        this.title = function(title) {
+            console.log("title is now " + title)
+            this.titleel.innerHTML = title
+            this.titleel.setAttribute("style", "color: #666666;")
+            return this
+        }
+        this.leading = function(el) {
+            console.log("Leading is now set")
+            this.oldrc = rendercontext
+            rendercontext = this.leadingelement
+            el()
+            rendercontext = this.oldrc
+            this.leadingelement.style.display = "flex"
+            return this
+        }
+        this.headerstyle = function(title) {
+            if (title == "expanded") {
+                this.largetitleholder.innerHTML = ""
+                this.titleholder.innerHTML = ""
+                this.titleel = document.createElement("udtitle")
+                this.titleel.innerText = this.headertitle
+                this.largetitleholder.append(this.titleel)
+            } else if (title == "min") {
+                this.largetitleholder.innerHTML = ""
+                this.titleholder.innerHTML = ""
+                this.titleel = document.createElement("udtitlemin")
+                this.titleel.innerText = this.headertitle
+                this.titleholder.append(this.titleel)
+            } else if (title == "center") {
+                this.largetitleholder.innerHTML = ""
+                this.titleholder.innerHTML = ""
+                this.titleel = document.createElement("udtitlecenter")
+                this.titleel.innerText = this.headertitle
+                this.titleholder.append(this.titleel)
+            }
+            return this
+        }
+        this.style = deepBindFunctions(styleoperations, this)
+        this.universal = deepBindFunctions(universaloperations, this)
+    } else {
+        return new UDHeader(text);
+    }
+}
+
 function UDSplitView(s1, s2) {
     if(this instanceof UDSplitView) {
         this.side1 = s1
@@ -356,63 +405,31 @@ function UDSplitView(s1, s2) {
         this.title = function(title) {
             console.log("title is now " + title)
             this.titletext = title
-            this.titleel = document.createElement("udtitle")
-            this.titleel.innerHTML = title
-            this.titleel.setAttribute("style", "color: #666666;")
+            this.titleel = document.createElement("div")
+            this.oldrc = rendercontext
+            rendercontext = this.titleel
+            this.header = UDHeader(title)
+            rendercontext = this.oldrc
             this.side1el.prepend(this.titleel)
             return this
         }
         this.vtitle = function(title) {
             console.log("title is now " + title)
             this.titletextv = title
-            this.titleelv = document.createElement("udtitle")
-            this.titleelv.innerHTML = title
-            this.titleelv.setAttribute("style", "color: #666666;")
-            this.side2el.prepend(this.titleelv)
+            this.titleelv = document.createElement("div")
+            this.oldrc = rendercontext
+            rendercontext = this.titleelv
+            this.headers2 = UDHeader(title)
+            rendercontext = this.oldrc
+            this.side2el.prepend(this.titleel)
             return this
         }
         this.vtitlestyle = function(title) {
-            if (title == "expanded") {
-                this.titleelv.remove()
-                this.titleelv = document.createElement("udtitle")
-                this.titleelv.innerHTML = this.titletextv
-                this.titleelv.setAttribute("style", "color: #666666;")
-                this.side2el.prepend(this.titleelv)
-            } else if (title == "min") {
-                this.titleelv.remove()
-                this.titleelv = document.createElement("udtitlemin")
-                this.titleelv.innerHTML = this.titletextv
-                this.titleelv.setAttribute("style", "color: #666666;")
-                this.side2el.prepend(this.titleelv)
-            } else if (title == "center") {
-                this.titleelv.remove()
-                this.titleelv = document.createElement("udtitlecenter")
-                this.titleelv.innerHTML = this.titletextv
-                this.titleelv.setAttribute("style", "color: #666666;")
-                this.side2el.prepend(this.titleelv)
-            }
+            this.headers2.headerstyle(title)
             return this
         }
         this.titlestyle = function(title) {
-            if (title == "expanded") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitle")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-                this.side1el.prepend(this.titleel)
-            } else if (title == "min") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitlemin")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-                this.side1el.prepend(this.titleel)
-            } else if (title == "center") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitlecenter")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-                this.side1el.prepend(this.titleel)
-            }
+            this.header.headerstyle(title)
             return this
         }
         this.vbackground = function(col) {
@@ -570,7 +587,12 @@ function UDNavItem(text, icon) {
             this.element.setAttribute("style", "color: " + color + ";")
             return this
         }
-        this.onclick = universaloperations.elementclick
+        this.onclick = function(fn) {
+            console.log("onclick is now set")
+            this.element.addEventListener("click", (event) => {latestevent = event})
+            this.element.addEventListener("click", fn)
+            return this
+        }
         this.navStyle = function(style) {
             console.log("style is now " + style)
             $(this.textelement).removeClass("udnavitemextextver")
@@ -612,10 +634,20 @@ function UDButton(text, icon) {
         lucide.createIcons()
         this.color = function(color) {
             console.log("color is now " + color)
-            this.element.setAttribute("style", "background-color: " + color + ";")
+            this.element.style.backgroundColor = color
             return this
         }
-        this.onclick = universaloperations.elementclick
+        this.fgcolor = function(color) {
+            console.log("fgcolor is now " + color)
+            this.element.style.color = color
+            return this
+        }
+        this.onclick = function(fn) {
+            console.log("onclick is now set")
+            this.element.addEventListener("click", (event) => {latestevent = event})
+            this.element.addEventListener("click", fn)
+            return this
+        }
         this.style = deepBindFunctions(styleoperations, this)
         this.universal = deepBindFunctions(universaloperations, this)
     } else {
@@ -742,28 +774,6 @@ function UDTabView(pages) {
         return new UDTabView(pages);
     }
 }
-
-// function UDHeader() {
-//     if(this instanceof UDHeader) {
-//         this.iconcontent = icon
-//         this.element = document.createElement("div")
-//         this.iconelement = document.createElement("i")
-//         this.iconelement.setAttribute("data-lucide", icon)
-//         this.iconelement.style.height = 20
-//         this.iconelement.style.width = 20
-//         this.element.append(this.iconelement)
-//         rendercontext.append(this.element)
-//         lucide.createIcons()
-//         this.color = function(color) {
-//             console.log("color is now " + color)
-//             this.element.setAttribute("style", "color: " + color + ";")
-//             lucide.createIcons()
-//             return this
-//         }
-//     } else {
-//         return new UDHeader();
-//     }
-// }
 
 var sparkutils = {
     load: function(url) {

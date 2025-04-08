@@ -17,6 +17,27 @@ vstack {
     flex-wrap: nowrap;
 }
 
+udheaderleading {
+    min-height: 60px;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 20px;
+    display: none;
+}
+
+udheaderrow {
+    min-height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+udtitleholder {
+    width: 100%;
+    display: block;
+}
+
 @media only screen and (min-width: 601px) {
     popovercontent {
         position: fixed;
@@ -130,7 +151,7 @@ udtitle {
     font-weight: 600;
     font-family: Figtree;
     margin-left: 25px;
-    margin-top: 60px;
+    margin-top: 0px;
     display: block;
     margin-bottom: 20px;
 }
@@ -139,21 +160,17 @@ udtitlemin {
     font-size: 16px;
     font-family: Figtree;
     margin-left: 25px;
-    margin-top: 20px;
     display: block;
     font-weight: 600;
-    margin-bottom: 20px;
 }
 
 udtitlecenter {
     font-size: 16px;
     font-family: Figtree;
-    margin-top: 20px;
     display: block;
     font-weight: 600;
     width: 100%;
     text-align: center;
-    margin-bottom: 20px;
 }
 
 udnavitemex {
@@ -208,7 +225,6 @@ udbuttontext {
     font-size: 16px;
     font-family: Figtree;
     display: block;
-    color: white;
 }
 
 udnavitemextext {
