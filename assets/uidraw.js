@@ -324,9 +324,9 @@ function UDTextNode(text) {
 
 function UDCustomHTML(content) {
     if(this instanceof UDCustomHTML) {
-        this.textcontent = text
+        this.content = content
         this.element = document.createElement("div")
-        this.element.innerHTML = this.textcontent
+        this.element.innerHTML = this.content
         rendercontext.append(this.element)
     } else {
         return new UDCustomHTML(content);
