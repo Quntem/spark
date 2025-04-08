@@ -322,6 +322,17 @@ function UDTextNode(text) {
     }
 }
 
+function UDCustomHTML(content) {
+    if(this instanceof UDCustomHTML) {
+        this.textcontent = text
+        this.element = document.createElement("div")
+        this.element.innerHTML = this.textcontent
+        rendercontext.append(this.element)
+    } else {
+        return new UDCustomHTML(content);
+    }
+}
+
 function UDMarkdownBlock(md) {
     if(this instanceof UDMarkdownBlock) {
         this.textcontent = md
