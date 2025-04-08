@@ -65,6 +65,7 @@ app.get("/serverfunction/:fnname", (req, res) => {
 app.use(express.static("./"))
 
 var server = app.listen(5500, () => {
+    console.log("Spark Framework Server:")
     console.log("listening on 5500")
 })
 

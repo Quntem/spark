@@ -1,6 +1,8 @@
 rendercontext = document.getElementById("mainview")
 navigatepos = document.getElementById("mainview")
 
+var latestevent = ""
+
 var hash = window.location.hash;
 if (window.location.hash == "") {
     window.location.hash = "#nav"
@@ -33,6 +35,7 @@ class UIDrawView {
 
     navigateto() {
         // navigatepos.style.left = 0
+        navigatepos = $(latestevent.srcElement).closest(".navigateable-element").find(".navigatepos")[0]
         navigatepos.innerHTML = ""
         this.oldrc = rendercontext
         rendercontext = navigatepos
@@ -158,7 +161,14 @@ var styleoperations = {
     },
 }
 
-var universaloperations = {}
+var universaloperations = {
+    elementclick: function(fn) {
+        console.log("onclick is now set")
+        this.element.addEventListener("click", (event) => {latestevent = event})
+        this.element.addEventListener("click", fn)
+        return this
+    }
+}
 
 function UDVerStack(el) {
     if(this instanceof UDVerStack) {
@@ -417,6 +427,7 @@ function UDSplitView(s1, s2) {
         }
         this.oldrc = rendercontext
         this.element = document.createElement("splitview")
+        this.element.classList.add("navigateable-element")
         this.oldrc.append(this.element)
         rendercontext = document.createElement("splitviews1")
         this.side1el = rendercontext
@@ -424,7 +435,8 @@ function UDSplitView(s1, s2) {
         this.side1()
         rendercontext = document.createElement("splitviews2")
         this.side2el = rendercontext
-        navigatepos = rendercontext
+        rendercontext.classList.add("navigatepos")
+        // navigatepos = rendercontext
         this.element.append(rendercontext)
         this.side2()
         rendercontext = this.oldrc
@@ -558,11 +570,7 @@ function UDNavItem(text, icon) {
             this.element.setAttribute("style", "color: " + color + ";")
             return this
         }
-        this.onclick = function(fn) {
-            console.log("onclick is now set")
-            this.element.addEventListener("click", fn)
-            return this
-        }
+        this.onclick = universaloperations.elementclick
         this.navStyle = function(style) {
             console.log("style is now " + style)
             $(this.textelement).removeClass("udnavitemextextver")
@@ -607,11 +615,7 @@ function UDButton(text, icon) {
             this.element.setAttribute("style", "background-color: " + color + ";")
             return this
         }
-        this.onclick = function(fn) {
-            console.log("onclick is now set")
-            this.element.addEventListener("click", fn)
-            return this
-        }
+        this.onclick = universaloperations.elementclick
         this.style = deepBindFunctions(styleoperations, this)
         this.universal = deepBindFunctions(universaloperations, this)
     } else {
