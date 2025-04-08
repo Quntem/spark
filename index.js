@@ -3,7 +3,6 @@ var app = express()
 const fs = require('fs');
 const vm = require('vm');
 var socket = require('socket.io')
-app.use(express.json())
 
 var cat = ""
 
@@ -41,6 +40,8 @@ fs.watch(("./src/backend"), (eventType, fileName) => {
     console.log(fileName + " was modified: reloading server functions")
     loadServerFunctions()
 })
+
+app.use(express.json())
 
 app.get("/serverfunction/:fnname", (req, res) => {
     fnname = req.params.fnname
