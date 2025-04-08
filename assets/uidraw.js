@@ -781,6 +781,21 @@ var sparkutils = {
         newscriptel.setAttribute("src", "src/frontend/" + url)
         document.head.append(newscriptel)
     },
+    loadmodule: async function(module, file) {
+        newscriptel = document.createElement("script")
+        if (file != undefined) {
+            newscriptel.setAttribute("src", "src/modules/" + module + "/frontend/" + url + ".js")
+            // var res = await fetch("src/modules/" + module + "/frontend/" + url + ".js")
+            // var newlib = await res.text()
+            // eval(newlib)
+        } else {
+            newscriptel.setAttribute("src", "src/modules/" + module + "/frontend/index.js")
+            // var res = await fetch("src/modules/" + module + "/frontend/index.js")
+            // var newlib = await res.text()
+            // eval(newlib)
+        }
+        document.head.append(newscriptel)
+    },
     serverfunctions: {
         call: async function(name, input) {
             res = await fetch("serverfunction/" + name)
@@ -789,7 +804,7 @@ var sparkutils = {
             try {
                 resdata = JSON.parse(resdatatxt)
             } catch {
-                resdata = resdata
+                resdata = resdatatxt
             }
             return resdata
         }

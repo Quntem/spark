@@ -1,5 +1,9 @@
 var newstack = ""
 
+// var loadanchor = ""
+
+sparkutils.loadmodule("newtest")
+
 var sftest = new UIDrawView(() => {
     UDNavView(() => {
         UDInnerPadding(() => {
@@ -14,6 +18,7 @@ var sftest = new UIDrawView(() => {
                     })
             })
                 .gap(10)
+            testview.render()
         })
     })
         .title("SF Testing")
@@ -109,4 +114,7 @@ var mainView = new UIDrawView(() => {
         .title("Testing App")
         // .header.headerstyle("min")
 })
-mainView.render()
+
+window.onload = () => {
+    mainView.render()
+}
