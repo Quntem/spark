@@ -11,6 +11,12 @@ popover {
     background-color: #0000009c;
 }
 
+vstack {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
 @media only screen and (min-width: 601px) {
     popovercontent {
         position: fixed;
