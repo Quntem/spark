@@ -1,0 +1,10 @@
+{
+    "updates": {
+        "files": [
+            {
+                "filename": "package-lock.json",
+                "action": "ignore"
+            }
+        ]
+    }
+}
