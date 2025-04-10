@@ -1100,7 +1100,7 @@ var sparkutils = {
     loadmodule: async function(module, file) {
         newscriptel = document.createElement("script")
         if (file != undefined) {
-            newscriptel.setAttribute("src", "src/modules/" + module + "/frontend/" + url + ".js")
+            newscriptel.setAttribute("src", "src/modules/" + module + "/frontend/" + file + ".js")
             // var res = await fetch("src/modules/" + module + "/frontend/" + url + ".js")
             // var newlib = await res.text()
             // eval(newlib)
