@@ -1,8 +1,14 @@
-# Intro
-This page will introduce the basics of UIDraw and Spark Framework.
-  
-## UIDraw
-UIDraw is a simple way to create UI without any complexity. It is designed to be simlar to SwiftUI, but it is not exactly the same. Below is an example snippet.
+![GitHub Repo stars](https://img.shields.io/github/stars/Quntem/spark?style=for-the-badge)
+![GitHub Release](https://img.shields.io/github/v/release/Quntem/spark?include_prereleases&display_name=tag&style=for-the-badge)
+
+### This repository shares between Spark Framework and UIDraw.
+
+# Overview
+## What is Spark Framework?
+Spark Framework is a simple backend that intergrates with UIDraw. It provides simple backend functionality through server functions.
+
+## What is UIDraw?
+UIDraw is a simple way to create UI without any complexity. It is designed to be simlar to SwiftUI, but it is not exactly the same. Below is an example snippet for UIDraw.
 
 ```javascript
 //defining the base view
@@ -58,40 +64,69 @@ var librarypage = new UIDrawView(() => {
 newview.render()
 ```
 
-## Spark Framework  
-Spark Framework is a simple backend that intergrates with UIDraw. It provides simple backend functionality through server functions.  
+# Spark & UIDraw Documentation
+This page will introduce the basics of UIDraw and Spark Framework.
 
+## Spark Framework
+Spark Framework is a simple backend that intergrates with UIDraw. It provides simple backend functionality through server functions.
+
+### Elements
+Elements are JavaScript functions. Here's an example for text elements:
 ```javascript
-// backend/api.js
+    UDTextNode("text")
+```
 
-// define the server function with a name
-sparkbe.serverfunction("files", (sf) => {
-    fs.readdir("files", (err, files) => {
-        if(!err) {
-            // send a JSON object back to the client
-            sf.response.SendJson({
-                "files": files
-            })
-        } else {
-            throw err 
-        }
+Some elements accept more elements as a parameter. Here's an example for ```UDHorStack```. The following code displays how it works.
+```javascript
+    UDHorStack(() => {
+        // Child Elements
+        UDTextNode("Text")
+        UDTextNode("Text2")
     })
-})
 ```
-Calling this function can then easily be done from the frontend  
-```javascript
-// frontend/index.js
 
-// wait for the page to load
-window.onload = async () => {
-    // call the server function and await the response
-    filelist = await sparkutils.serverfunctions.call("files")
-    // render the page
-    newview.render()
-}
+Elements use modiers to modify themselves. A number of them should be shown by your IDE when you type a ".".
+
+You can chain modifiers as shown below:
+```javascript
+    UDHorStack(() => {
+        UDTextNode("Text")
+        UDTextNode("Text2")
+    })
+        // Parameters
+        .gap(10)
+        .style.backgroundColor("red")
 ```
-Spark Framework makes it easier to get started with web development because it provides an easy to understand relationship between the client and server.  
-this repo also contains collabKit, an easy way to add live cursors to your UIDraw app.
+
+Some modifiers may take JS code as a parameter.
+```javascript
+    UDButton("Test", "star")
+        .onclick(() => {
+            //JS code
+            console.log("Test")
+        })
+```
+
+### Rendering
+
+To render the UI, you must use a ```UIDrawView```, and then render it when the page loads.
+
+```javascript
+    var mainView = new UIDrawView(() => {
+        Text("demo")
+    })
+
+    // You don't need to wait until the page is loaded, but it'xs recomended.
+    window.addEventListener("load" => {
+        mainView.render()
+    })
+```
+
+> There may be unexpected effects using this code, but is recommended to use it.
+
+### Common Usage
+
+hey look i need to go right now i'll fill this section in when im back ok go look here if you're desperate -> [not virus](https://gist.github.com/OscarMayReal/406c9d84f02718b45b1fccb0abab9953#common-usage)
 
 ## Installation
 Create a new project with the Spark Framework by using ```npx create-spark-app```.
