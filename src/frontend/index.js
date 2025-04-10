@@ -88,15 +88,16 @@ var headertest = new UIDrawView(() => {
         .title("Header Testing")
         // .header.leading(() => UDIconNode("navigation"))
         .header.leading(() => {
-            UDImageNode("src/images/takeoff.png")
-                .style.height(20)
-                .style.width("auto")
-                .universal.elementclick(() => {
-                    $(splitview.side1el).toggle()
-                })
+            sidebartoggle.headerinst = sidebartoggle.header()
+            // UDImageNode("src/images/takeoff.png")
+            //     .style.height(20)
+            //     .style.width("auto")
+            //     .universal.elementclick(() => {
+            //         $(splitview.side1el).toggle()
+            //     })
         })
         .trailing(() => UDIconNode("navigation"))
-        .headerstyle("min")
+        // .headerstyle("min")
         .style.border.bottom({
             width: 1,
             color: "#e4e4e7"
@@ -150,6 +151,9 @@ var mainView = new UIDrawView(() => {
         sftest.render()
     })
         .title("Testing App")
+        .header.leading(() => {
+            sidebartoggle.sidebarinst = sidebartoggle.sidebar()
+        })
         // .header.headerstyle("min")
 })
 
@@ -179,4 +183,34 @@ var newview = new UIDrawView(() => {
         })
     })
         .title("Title Text")
+})
+
+var sidebartoggle = {}
+
+sidebartoggle.sidebar = new UIDrawComponent(() => {
+    if($("splitviews1").is(":visible")) {
+        UDIconNode("panel-left")
+            .universal.elementclick(() => {
+                $("splitviews1").hide()
+                sidebartoggle.sidebarinst.render()
+                sidebartoggle.headerinst.render()
+            })
+    }
+}, {
+    params: 0,
+    type: "stateful"
+})
+
+sidebartoggle.header = new UIDrawComponent(() => {
+    if(!$("splitviews1").is(":visible")) {
+        UDIconNode("panel-left")
+            .universal.elementclick(() => {
+                $("splitviews1").show()
+                sidebartoggle.sidebarinst.render()
+                sidebartoggle.headerinst.render()
+            })
+    }
+}, {
+    params: 0,
+    type: "stateful"
 })
