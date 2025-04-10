@@ -3,11 +3,12 @@ var app = express()
 const fs = require('fs');
 const vm = require('vm');
 var socket = require('socket.io')
-app.use(express.json())
 
 var cat = ""
 
 var fnlistpos = 0
+
+var globfolder = ""
 
 var serverfunctions = [
     
@@ -23,8 +24,15 @@ var sparkbe = {
 }
 
 var loadServerFunctions = function() {
+    sparkbe.serverfunction = function(namea, fna) {
+        serverfunctions.push({
+            fn: fna,
+            name: namea,
+        })
+    }
+
     serverfunctions = [
-    
+        
     ]
 
     const befolder = fs.readdirSync("./src/backend")
@@ -33,19 +41,49 @@ var loadServerFunctions = function() {
         code = fs.readFileSync('./src/backend/' + item, 'utf8');
         eval(code);
     })
+
+    sparkbe.serverfunction = function(namea, fna) {
+        serverfunctions.push({
+            fn: fna,
+            name: globfolder + "/" + namea,
+        })
+    }
+
+    try {
+        const sfmodules = fs.readdirSync("./src/modules")
+        sfmodules.forEach(item => {
+            globfolder = item
+            const innerfiles = fs.readdirSync("./src/modules/" + globfolder + "/backend")
+            //console.log(innerfiles)
+            innerfiles.forEach(item => {
+                code = fs.readFileSync("./src/modules/" + globfolder + "/backend/" + item, 'utf8');
+                eval(code);
+            })
+        })
+    } catch {
+
+    }
+    //console.log(serverfunctions)
 }
 
 loadServerFunctions()
 
 fs.watch(("./src/backend"), (eventType, fileName) => {
-    console.log(fileName + " was modified: reloading server functions")
+    //console.log(fileName + " was modified: reloading server functions")
     loadServerFunctions()
 })
 
-app.get("/serverfunction/:fnname", (req, res) => {
-    fnname = req.params.fnname
+app.use(express.json())
+
+app.get("/serverfunction/:fnname(*)", (req, res) => {
+    const fnname = req.params.fnname;
+
+    
     serverfunctions.forEach(el => {
+        //console.log(el)
+        //console.log(fnname)
         if (el.name == fnname) {
+            //console.log("activated")
             sf = {
                 "inputs": req.body,
                 "response": {
@@ -57,10 +95,10 @@ app.get("/serverfunction/:fnname", (req, res) => {
                     },
                 }
             }
-            el.fn(sf)
+            el.fn(sf);
         }
-    })
-})
+    });
+});
 
 app.use(express.static("./"))
 
@@ -93,7 +131,7 @@ io.on("connection", (socket) => {
                 "y": payload.y
             }))
         } catch(err) {
-            console.log(err)
+            //console.log(err)
         }
     })
 });

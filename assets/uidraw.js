@@ -48,15 +48,75 @@ class UIDrawView {
     }
 }
 
-// class UDSplitView {
-//     constructor(s1, s2) {
-//         this.side1 = s1
-//         this.side2 = s2
-//     }
-//     title(text) {
-//         this.titletext = text
-//     }
-// }
+class UIDrawComponent {
+    constructor(definition, options) {
+        const Component = function (...params) {
+            if (!(this instanceof Component)) {
+                return new Component(...params);
+            }
+            this.params = params;
+            this.oldrc = rendercontext;
+            this.element = document.createElement("div");
+            rendercontext = this.element;
+            definition(...params);
+            rendercontext = this.oldrc;
+            this.style = deepBindFunctions(styleoperations, this);
+            this.universal = deepBindFunctions(universaloperations, this);
+            this.oldrc.append(this.element);
+        };
+
+        if (options.type === "stateful") {
+            Component.prototype.render = function () {
+                this.element.innerHTML = "";
+                this.oldrc = rendercontext;
+                rendercontext = this.element;
+                definition(...this.params);
+                rendercontext = this.oldrc;
+            };
+
+            Component.prototype.bindstate = function (statevar) {
+                this.bindedstateval = statevar.content;
+                statevar.bindelement(this);
+                this.render();
+            };
+        }
+
+        return Component;
+    }
+}
+
+// Example usage:
+// Stateless component:
+// var MyComponent = new UIDrawComponent((title, content) => {
+//     UDVerStack(() => {
+//         UDTextNode(title);
+//         content();
+//     });
+// }, {
+//     type: "stateless"
+// });
+
+// Usage:
+// MyComponent("Test", () => {
+//     UDButton("button title");
+// });
+
+// Stateful component:
+// var MyStatefulComponent = new UIDrawComponent(function (title, content) {
+//     UDVerStack(() => {
+//         UDTextNode(title);
+//         content();
+//     });
+// }, {
+//     type: "stateful"
+// });
+
+// const state = new StateVar("Initial Title");
+// const statefulInstance = MyStatefulComponent(state.content, () => {
+//     UDButton("button title");
+// });
+// statefulInstance.bindstate(state);
+// state.update("Updated Title");
 
 function deepBindFunctions(obj, context) {
     const result = Array.isArray(obj) ? [] : {};
@@ -137,6 +197,217 @@ var styleoperations = {
             }
         },
     },
+    margin: {
+        all: function(val) {
+            if (typeof val === "number") {
+                this.element.style.margin = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.margin = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.margin
+            }
+        },
+        left: function(val) {
+            if (typeof val === "number") {
+                this.element.style.marginLeft = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.marginLeft = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.marginLeft
+            }
+        },
+        right: function(val) {
+            if (typeof val === "number") {
+                this.element.style.marginRight = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.marginRight = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.marginRight
+            }
+        },
+        top: function(val) {
+            if (typeof val === "number") {
+                this.element.style.marginTop = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.marginTop = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.marginTop
+            }
+        },
+        bottom: function(val) {
+            if (typeof val === "number") {
+                this.element.style.marginBottom = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.marginBottom = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.marginBottom
+            }
+        },
+    },
+    radius: {
+        all: function(val) {
+            if (typeof val === "number") {
+                this.element.style.borderRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.borderRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.borderRadius
+            }
+        },
+        topLeft: function(val) {
+            if (typeof val === "number") {
+                this.element.style.borderTopLeftRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.borderTopLeftRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.borderTopLeftRadius
+            }
+        },
+        topRight: function(val) {
+            if (typeof val === "number") {
+                this.element.style.bordertopRightRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.bordertopRightRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.bordertopRightRadius
+            }
+        },
+        BottomLeft: function(val) {
+            if (typeof val === "number") {
+                this.element.style.borderBottomLeftRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.borderBottomLeftRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.borderBottomLeftRadius
+            }
+        },
+        bottomRight: function(val) {
+            if (typeof val === "number") {
+                this.element.style.BorderBottomRightRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.BorderBottomRightRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.BorderBottomRightRadius
+            }
+        },
+    },
+    border: {
+        all: function(val) {
+            this.element.style.borderStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderWidth,
+                    color: this.element.style.borderColor
+                }
+            } else {
+                return this
+            }
+        },
+        bottom: function(val) {
+            this.element.style.borderBottomStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderBottomWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderBottomWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderBottomColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderBottomWidth,
+                    color: this.element.style.borderBottomColor
+                }
+            } else {
+                return this
+            }
+        },
+        top: function(val) {
+            this.element.style.borderTopStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderTopWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderTopWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderTopColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderTopWidth,
+                    color: this.element.style.borderTopColor
+                }
+            } else {
+                return this
+            }
+        },
+        left: function(val) {
+            this.element.style.borderLeftStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderLeftWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderLeftWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderLeftColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderLeftWidth,
+                    color: this.element.style.borderLeftColor
+                }
+            } else {
+                return this
+            }
+        },
+        right: function(val) {
+            this.element.style.borderRightStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderRightWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderRightWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderRightColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderRightWidth,
+                    color: this.element.style.borderRightColor
+                }
+            } else {
+                return this
+            }
+        },
+    },
     height: function(val) {
         if (typeof val === "number") {
             this.element.style.height = val + "px"
@@ -159,6 +430,22 @@ var styleoperations = {
             return this.element.style.width
         }
     },
+    backgroundColor: function(val) {
+        if (typeof val === "string") {
+            this.element.style.backgroundColor = val
+            return this
+        } else if (val == undefined) {
+            return this.element.style.backgroundColor
+        }
+    },
+    contentColor: function(val) {
+        if (typeof val === "string") {
+            this.element.style.color = val
+            return this
+        } else if (val == undefined) {
+            return this.element.style.color
+        }
+    }
 }
 
 var universaloperations = {
@@ -307,30 +594,16 @@ function UDNavView(v) {
         this.title = function(title) {
             console.log("title is now " + title)
             this.titletext = title
-            this.titleel = document.createElement("udtitle")
-            this.titleel.innerHTML = title
-            this.titleel.setAttribute("style", "color: #666666;")
+            this.titleel = document.createElement("headercont")
+            this.oldrc = rendercontext
+            rendercontext = this.titleel
+            this.header = UDHeader(title)
+            rendercontext = this.oldrc
             this.contentel.prepend(this.titleel)
             return this
         }
         this.titlestyle = function(title) {
-            if (title == "expanded") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitle")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-            } else if (title == "min") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitlemin")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-            } else if (title == "center") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitlecenter")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-            }
-            this.contentel.prepend(this.titleel)
+            this.header.headerstyle(title)
             return this
         }
         this.background = function(col) {
@@ -341,11 +614,88 @@ function UDNavView(v) {
         this.oldrc = rendercontext
         rendercontext = document.createElement("navview")
         this.contentel = rendercontext
+        this.element = rendercontext
         this.oldrc.append(rendercontext)
         this.contentsrun()
         rendercontext = this.oldrc
+        this.style = deepBindFunctions(styleoperations, this)
+        this.universal = deepBindFunctions(universaloperations, this)
     } else {
         return new UDNavView(v);
+    }
+}
+
+function UDHeader(text) {
+    if(this instanceof UDHeader) {
+        this.headertitle = text
+        this.oldrc = rendercontext
+        this.element = document.createElement("udheader")
+        this.titleel = document.createElement("udtitle")
+        this.headerrow = document.createElement("udheaderrow")
+        this.largetitleholder = document.createElement("udlargetitleholder")
+        this.titleholder = document.createElement("udtitleholder")
+        this.leadingelement = document.createElement("udheaderleading")
+        this.trailingelement = document.createElement("udheadertrailing")
+        this.titleel.innerText = this.headertitle
+        this.headerrow.append(this.leadingelement)
+        this.headerrow.append(this.titleholder)
+        this.headerrow.append(this.trailingelement)
+        this.element.append(this.headerrow)
+        this.largetitleholder.append(this.titleel)
+        this.element.append(this.largetitleholder)
+        rendercontext = this.element
+        this.oldrc.append(this.element)
+        rendercontext = this.oldrc
+        this.title = function(title) {
+            console.log("title is now " + title)
+            this.titleel.innerHTML = title
+            this.titleel.setAttribute("style", "color: #666666;")
+            return this
+        }
+        this.leading = function(el) {
+            console.log("Leading is now set")
+            this.oldrc = rendercontext
+            rendercontext = this.leadingelement
+            el()
+            rendercontext = this.oldrc
+            this.leadingelement.style.display = "flex"
+            return this
+        }
+        this.trailing = function(el) {
+            console.log("Leading is now set")
+            this.oldrc = rendercontext
+            rendercontext = this.trailingelement
+            el()
+            rendercontext = this.oldrc
+            this.trailingelement.style.display = "flex"
+            return this
+        }
+        this.headerstyle = function(title) {
+            if (title == "expanded") {
+                this.largetitleholder.innerHTML = ""
+                this.titleholder.innerHTML = ""
+                this.titleel = document.createElement("udtitle")
+                this.titleel.innerText = this.headertitle
+                this.largetitleholder.append(this.titleel)
+            } else if (title == "min") {
+                this.largetitleholder.innerHTML = ""
+                this.titleholder.innerHTML = ""
+                this.titleel = document.createElement("udtitlemin")
+                this.titleel.innerText = this.headertitle
+                this.titleholder.append(this.titleel)
+            } else if (title == "center") {
+                this.largetitleholder.innerHTML = ""
+                this.titleholder.innerHTML = ""
+                this.titleel = document.createElement("udtitlecenter")
+                this.titleel.innerText = this.headertitle
+                this.titleholder.append(this.titleel)
+            }
+            return this
+        }
+        this.style = deepBindFunctions(styleoperations, this)
+        this.universal = deepBindFunctions(universaloperations, this)
+    } else {
+        return new UDHeader(text);
     }
 }
 
@@ -356,63 +706,33 @@ function UDSplitView(s1, s2) {
         this.title = function(title) {
             console.log("title is now " + title)
             this.titletext = title
-            this.titleel = document.createElement("udtitle")
-            this.titleel.innerHTML = title
-            this.titleel.setAttribute("style", "color: #666666;")
+            this.titleel = document.createElement("headercont")
+            this.titleel.style.boxSizing = "border-box"
+            this.oldrc = rendercontext
+            rendercontext = this.titleel
+            this.header = UDHeader(title)
+            rendercontext = this.oldrc
             this.side1el.prepend(this.titleel)
             return this
         }
         this.vtitle = function(title) {
             console.log("title is now " + title)
             this.titletextv = title
-            this.titleelv = document.createElement("udtitle")
-            this.titleelv.innerHTML = title
-            this.titleelv.setAttribute("style", "color: #666666;")
-            this.side2el.prepend(this.titleelv)
+            this.titleelv = document.createElement("headercont")
+            this.titleelv.style.boxSizing = "border-box"
+            this.oldrc = rendercontext
+            rendercontext = this.titleelv
+            this.headers2 = UDHeader(title)
+            rendercontext = this.oldrc
+            this.side2el.prepend(this.titleel)
             return this
         }
         this.vtitlestyle = function(title) {
-            if (title == "expanded") {
-                this.titleelv.remove()
-                this.titleelv = document.createElement("udtitle")
-                this.titleelv.innerHTML = this.titletextv
-                this.titleelv.setAttribute("style", "color: #666666;")
-                this.side2el.prepend(this.titleelv)
-            } else if (title == "min") {
-                this.titleelv.remove()
-                this.titleelv = document.createElement("udtitlemin")
-                this.titleelv.innerHTML = this.titletextv
-                this.titleelv.setAttribute("style", "color: #666666;")
-                this.side2el.prepend(this.titleelv)
-            } else if (title == "center") {
-                this.titleelv.remove()
-                this.titleelv = document.createElement("udtitlecenter")
-                this.titleelv.innerHTML = this.titletextv
-                this.titleelv.setAttribute("style", "color: #666666;")
-                this.side2el.prepend(this.titleelv)
-            }
+            this.headers2.headerstyle(title)
             return this
         }
         this.titlestyle = function(title) {
-            if (title == "expanded") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitle")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-                this.side1el.prepend(this.titleel)
-            } else if (title == "min") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitlemin")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-                this.side1el.prepend(this.titleel)
-            } else if (title == "center") {
-                this.titleel.remove()
-                this.titleel = document.createElement("udtitlecenter")
-                this.titleel.innerHTML = this.titletext
-                this.titleel.setAttribute("style", "color: #666666;")
-                this.side1el.prepend(this.titleel)
-            }
+            this.header.headerstyle(title)
             return this
         }
         this.vbackground = function(col) {
@@ -486,6 +806,19 @@ function UDCustomHTML(content) {
         this.universal = deepBindFunctions(universaloperations, this)
     } else {
         return new UDCustomHTML(content);
+    }
+}
+
+function UDImageNode(url) {
+    if(this instanceof UDImageNode) {
+        this.url = url
+        this.element = document.createElement("img")
+        this.element.src = url
+        rendercontext.append(this.element)
+        this.style = deepBindFunctions(styleoperations, this)
+        this.universal = deepBindFunctions(universaloperations, this)
+    } else {
+        return new UDImageNode(url);
     }
 }
 
@@ -570,7 +903,12 @@ function UDNavItem(text, icon) {
             this.element.setAttribute("style", "color: " + color + ";")
             return this
         }
-        this.onclick = universaloperations.elementclick
+        this.onclick = function(fn) {
+            console.log("onclick is now set")
+            this.element.addEventListener("click", (event) => {latestevent = event})
+            this.element.addEventListener("click", fn)
+            return this
+        }
         this.navStyle = function(style) {
             console.log("style is now " + style)
             $(this.textelement).removeClass("udnavitemextextver")
@@ -612,10 +950,20 @@ function UDButton(text, icon) {
         lucide.createIcons()
         this.color = function(color) {
             console.log("color is now " + color)
-            this.element.setAttribute("style", "background-color: " + color + ";")
+            this.element.style.backgroundColor = color
             return this
         }
-        this.onclick = universaloperations.elementclick
+        this.fgcolor = function(color) {
+            console.log("fgcolor is now " + color)
+            this.element.style.color = color
+            return this
+        }
+        this.onclick = function(fn) {
+            console.log("onclick is now set")
+            this.element.addEventListener("click", (event) => {latestevent = event})
+            this.element.addEventListener("click", fn)
+            return this
+        }
         this.style = deepBindFunctions(styleoperations, this)
         this.universal = deepBindFunctions(universaloperations, this)
     } else {
@@ -743,32 +1091,25 @@ function UDTabView(pages) {
     }
 }
 
-// function UDHeader() {
-//     if(this instanceof UDHeader) {
-//         this.iconcontent = icon
-//         this.element = document.createElement("div")
-//         this.iconelement = document.createElement("i")
-//         this.iconelement.setAttribute("data-lucide", icon)
-//         this.iconelement.style.height = 20
-//         this.iconelement.style.width = 20
-//         this.element.append(this.iconelement)
-//         rendercontext.append(this.element)
-//         lucide.createIcons()
-//         this.color = function(color) {
-//             console.log("color is now " + color)
-//             this.element.setAttribute("style", "color: " + color + ";")
-//             lucide.createIcons()
-//             return this
-//         }
-//     } else {
-//         return new UDHeader();
-//     }
-// }
-
 var sparkutils = {
     load: function(url) {
         newscriptel = document.createElement("script")
         newscriptel.setAttribute("src", "src/frontend/" + url)
+        document.head.append(newscriptel)
+    },
+    loadmodule: async function(module, file) {
+        newscriptel = document.createElement("script")
+        if (file != undefined) {
+            newscriptel.setAttribute("src", "src/modules/" + module + "/frontend/" + url + ".js")
+            // var res = await fetch("src/modules/" + module + "/frontend/" + url + ".js")
+            // var newlib = await res.text()
+            // eval(newlib)
+        } else {
+            newscriptel.setAttribute("src", "src/modules/" + module + "/frontend/index.js")
+            // var res = await fetch("src/modules/" + module + "/frontend/index.js")
+            // var newlib = await res.text()
+            // eval(newlib)
+        }
         document.head.append(newscriptel)
     },
     serverfunctions: {
@@ -779,7 +1120,7 @@ var sparkutils = {
             try {
                 resdata = JSON.parse(resdatatxt)
             } catch {
-                resdata = resdata
+                resdata = resdatatxt
             }
             return resdata
         }
@@ -805,3 +1146,35 @@ function StateVar(content) {
         return new StateVar(content);
     }
 }
+
+function createUDComponent(name, definition) {
+    function UDComponent(...args) {
+        if (this instanceof UDComponent) {
+            this.element = document.createElement(name);
+            this.oldrc = rendercontext;
+            rendercontext = this.element;
+            definition.apply(this, args);
+            rendercontext = this.oldrc;
+            this.style = deepBindFunctions(styleoperations, this);
+            this.universal = deepBindFunctions(universaloperations, this);
+        } else {
+            return new UDComponent(...args);
+        }
+    }
+
+    return UDComponent;
+}
+
+// Example usage:
+// const UDCard = createUDComponent("udcard", function (title, content) {
+//     UDVerStack(() => {
+//         UDHeader(title);
+//         UDInnerPadding(() => {
+//             UDTextNode(content);
+//         });
+//     });
+// });
+
+// Usage in code:
+// const card = UDCard("Card Title", "This is the card content.");
+// rendercontext.append(card.element);
