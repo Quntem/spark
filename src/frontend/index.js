@@ -1,4 +1,5 @@
 var newstack = ""
+var splitview = ""
 
 // var loadanchor = ""
 
@@ -43,11 +44,16 @@ var betest = new UIDrawView(() => {
         .title("Event Testing")
 })
 
+var x = 0
+var celement = ""
+
+var state = StateVar(0)
+
 var headertest = new UIDrawView(() => {
     UDNavView(() => {
-        UDHeader("test")
-            .headerstyle("center")
-            .leading(() => UDIconNode("navigation"))
+        // UDHeader("test")
+        //     .headerstyle("center")
+        //     .leading(() => UDIconNode("navigation"))
         UDInnerPadding(() => {
             newstack = UDVerStack(() => {
                 UDButton("Log button Event", "mouse")
@@ -60,10 +66,42 @@ var headertest = new UIDrawView(() => {
                     })
             })
                 .gap(10)
+            celement = MyComponent(state.content, () => {
+                UDButton("button title")
+            })
+                .bindstate(state)
+            UDVerStack(() => {
+
+            })
+                .style.height(100)
+                .style.width(150)
+                .style.radius.all(8)
+                .style.border.all({
+                    width: 1,
+                    color: "#e4e4e7"
+                })
+                .style.backgroundColor("white")
         })
+            .style.padding.top(20)
     })
-        // .title("Header Testing")
+        .style.backgroundColor("rgb(245, 245, 245)")
+        .title("Header Testing")
         // .header.leading(() => UDIconNode("navigation"))
+        .header.leading(() => {
+            UDImageNode("src/images/takeoff.png")
+                .style.height(20)
+                .style.width("auto")
+                .universal.elementclick(() => {
+                    $(splitview.side1el).toggle()
+                })
+        })
+        .trailing(() => UDIconNode("navigation"))
+        .headerstyle("min")
+        .style.border.bottom({
+            width: 1,
+            color: "#e4e4e7"
+        })
+        .style.backgroundColor("white")
 })
 
 var betest_navtest = new UIDrawView(() => {
@@ -91,7 +129,7 @@ var betest_navtest = new UIDrawView(() => {
 })
 
 var mainView = new UIDrawView(() => {
-    UDSplitView(() => {
+    splitview = UDSplitView(() => {
         UDNavItem("Server Functions", "server")
             .onclick(() => {
                 sftest.navigateto()
@@ -118,3 +156,27 @@ var mainView = new UIDrawView(() => {
 window.onload = () => {
     mainView.render()
 }
+
+//define the custom component
+
+var MyComponent = new UIDrawComponent((title, component) => {
+    UDVerStack(() => {
+        UDTextNode(state.content)
+        UDHorStack(component)
+            .gap(10)
+    })
+}, {
+    params: 2,
+    type: "stateful"
+})
+
+//usage example
+var newview = new UIDrawView(() => {
+    UDNavView(() => {
+        //use the custom component just like any other
+        MyComponent("Test", () => {
+            UDButton("button title")
+        })
+    })
+        .title("Title Text")
+})

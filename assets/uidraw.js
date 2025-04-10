@@ -48,15 +48,75 @@ class UIDrawView {
     }
 }
 
-// class UDSplitView {
-//     constructor(s1, s2) {
-//         this.side1 = s1
-//         this.side2 = s2
-//     }
-//     title(text) {
-//         this.titletext = text
-//     }
-// }
+class UIDrawComponent {
+    constructor(definition, options) {
+        const Component = function (...params) {
+            if (!(this instanceof Component)) {
+                return new Component(...params);
+            }
+            this.params = params;
+            this.oldrc = rendercontext;
+            this.element = document.createElement("div");
+            rendercontext = this.element;
+            definition(...params);
+            rendercontext = this.oldrc;
+            this.style = deepBindFunctions(styleoperations, this);
+            this.universal = deepBindFunctions(universaloperations, this);
+            this.oldrc.append(this.element);
+        };
+
+        if (options.type === "stateful") {
+            Component.prototype.render = function () {
+                this.element.innerHTML = "";
+                this.oldrc = rendercontext;
+                rendercontext = this.element;
+                definition(...this.params);
+                rendercontext = this.oldrc;
+            };
+
+            Component.prototype.bindstate = function (statevar) {
+                this.bindedstateval = statevar.content;
+                statevar.bindelement(this);
+                this.render();
+            };
+        }
+
+        return Component;
+    }
+}
+
+// Example usage:
+// Stateless component:
+// var MyComponent = new UIDrawComponent((title, content) => {
+//     UDVerStack(() => {
+//         UDTextNode(title);
+//         content();
+//     });
+// }, {
+//     type: "stateless"
+// });
+
+// Usage:
+// MyComponent("Test", () => {
+//     UDButton("button title");
+// });
+
+// Stateful component:
+// var MyStatefulComponent = new UIDrawComponent(function (title, content) {
+//     UDVerStack(() => {
+//         UDTextNode(title);
+//         content();
+//     });
+// }, {
+//     type: "stateful"
+// });
+
+// const state = new StateVar("Initial Title");
+// const statefulInstance = MyStatefulComponent(state.content, () => {
+//     UDButton("button title");
+// });
+// statefulInstance.bindstate(state);
+// state.update("Updated Title");
 
 function deepBindFunctions(obj, context) {
     const result = Array.isArray(obj) ? [] : {};
@@ -137,6 +197,217 @@ var styleoperations = {
             }
         },
     },
+    margin: {
+        all: function(val) {
+            if (typeof val === "number") {
+                this.element.style.margin = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.margin = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.margin
+            }
+        },
+        left: function(val) {
+            if (typeof val === "number") {
+                this.element.style.marginLeft = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.marginLeft = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.marginLeft
+            }
+        },
+        right: function(val) {
+            if (typeof val === "number") {
+                this.element.style.marginRight = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.marginRight = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.marginRight
+            }
+        },
+        top: function(val) {
+            if (typeof val === "number") {
+                this.element.style.marginTop = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.marginTop = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.marginTop
+            }
+        },
+        bottom: function(val) {
+            if (typeof val === "number") {
+                this.element.style.marginBottom = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.marginBottom = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.marginBottom
+            }
+        },
+    },
+    radius: {
+        all: function(val) {
+            if (typeof val === "number") {
+                this.element.style.borderRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.borderRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.borderRadius
+            }
+        },
+        topLeft: function(val) {
+            if (typeof val === "number") {
+                this.element.style.borderTopLeftRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.borderTopLeftRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.borderTopLeftRadius
+            }
+        },
+        topRight: function(val) {
+            if (typeof val === "number") {
+                this.element.style.bordertopRightRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.bordertopRightRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.bordertopRightRadius
+            }
+        },
+        BottomLeft: function(val) {
+            if (typeof val === "number") {
+                this.element.style.borderBottomLeftRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.borderBottomLeftRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.borderBottomLeftRadius
+            }
+        },
+        bottomRight: function(val) {
+            if (typeof val === "number") {
+                this.element.style.BorderBottomRightRadius = val + "px"
+                return this
+            } else if (typeof val === "string") {
+                this.element.style.BorderBottomRightRadius = val
+                return this
+            } else if (val == undefined) {
+                return this.element.style.BorderBottomRightRadius
+            }
+        },
+    },
+    border: {
+        all: function(val) {
+            this.element.style.borderStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderWidth,
+                    color: this.element.style.borderColor
+                }
+            } else {
+                return this
+            }
+        },
+        bottom: function(val) {
+            this.element.style.borderBottomStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderBottomWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderBottomWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderBottomColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderBottomWidth,
+                    color: this.element.style.borderBottomColor
+                }
+            } else {
+                return this
+            }
+        },
+        top: function(val) {
+            this.element.style.borderTopStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderTopWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderTopWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderTopColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderTopWidth,
+                    color: this.element.style.borderTopColor
+                }
+            } else {
+                return this
+            }
+        },
+        left: function(val) {
+            this.element.style.borderLeftStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderLeftWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderLeftWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderLeftColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderLeftWidth,
+                    color: this.element.style.borderLeftColor
+                }
+            } else {
+                return this
+            }
+        },
+        right: function(val) {
+            this.element.style.borderRightStyle = "solid"
+            if (typeof val.width === "number") {
+                this.element.style.borderRightWidth = val.width + "px"
+            } else if (typeof val.width === "string") {
+                this.element.style.borderRightWidth = val.width
+            }
+            if (typeof val.color === "string") {
+                this.element.style.borderRightColor = val.color
+            }
+            if (val == undefined) {
+                return {
+                    width: this.element.style.borderRightWidth,
+                    color: this.element.style.borderRightColor
+                }
+            } else {
+                return this
+            }
+        },
+    },
     height: function(val) {
         if (typeof val === "number") {
             this.element.style.height = val + "px"
@@ -159,6 +430,22 @@ var styleoperations = {
             return this.element.style.width
         }
     },
+    backgroundColor: function(val) {
+        if (typeof val === "string") {
+            this.element.style.backgroundColor = val
+            return this
+        } else if (val == undefined) {
+            return this.element.style.backgroundColor
+        }
+    },
+    contentColor: function(val) {
+        if (typeof val === "string") {
+            this.element.style.color = val
+            return this
+        } else if (val == undefined) {
+            return this.element.style.color
+        }
+    }
 }
 
 var universaloperations = {
@@ -307,7 +594,7 @@ function UDNavView(v) {
         this.title = function(title) {
             console.log("title is now " + title)
             this.titletext = title
-            this.titleel = document.createElement("div")
+            this.titleel = document.createElement("headercont")
             this.oldrc = rendercontext
             rendercontext = this.titleel
             this.header = UDHeader(title)
@@ -327,9 +614,12 @@ function UDNavView(v) {
         this.oldrc = rendercontext
         rendercontext = document.createElement("navview")
         this.contentel = rendercontext
+        this.element = rendercontext
         this.oldrc.append(rendercontext)
         this.contentsrun()
         rendercontext = this.oldrc
+        this.style = deepBindFunctions(styleoperations, this)
+        this.universal = deepBindFunctions(universaloperations, this)
     } else {
         return new UDNavView(v);
     }
@@ -345,9 +635,11 @@ function UDHeader(text) {
         this.largetitleholder = document.createElement("udlargetitleholder")
         this.titleholder = document.createElement("udtitleholder")
         this.leadingelement = document.createElement("udheaderleading")
+        this.trailingelement = document.createElement("udheadertrailing")
         this.titleel.innerText = this.headertitle
         this.headerrow.append(this.leadingelement)
         this.headerrow.append(this.titleholder)
+        this.headerrow.append(this.trailingelement)
         this.element.append(this.headerrow)
         this.largetitleholder.append(this.titleel)
         this.element.append(this.largetitleholder)
@@ -367,6 +659,15 @@ function UDHeader(text) {
             el()
             rendercontext = this.oldrc
             this.leadingelement.style.display = "flex"
+            return this
+        }
+        this.trailing = function(el) {
+            console.log("Leading is now set")
+            this.oldrc = rendercontext
+            rendercontext = this.trailingelement
+            el()
+            rendercontext = this.oldrc
+            this.trailingelement.style.display = "flex"
             return this
         }
         this.headerstyle = function(title) {
@@ -405,7 +706,8 @@ function UDSplitView(s1, s2) {
         this.title = function(title) {
             console.log("title is now " + title)
             this.titletext = title
-            this.titleel = document.createElement("div")
+            this.titleel = document.createElement("headercont")
+            this.titleel.style.boxSizing = "border-box"
             this.oldrc = rendercontext
             rendercontext = this.titleel
             this.header = UDHeader(title)
@@ -416,7 +718,8 @@ function UDSplitView(s1, s2) {
         this.vtitle = function(title) {
             console.log("title is now " + title)
             this.titletextv = title
-            this.titleelv = document.createElement("div")
+            this.titleelv = document.createElement("headercont")
+            this.titleelv.style.boxSizing = "border-box"
             this.oldrc = rendercontext
             rendercontext = this.titleelv
             this.headers2 = UDHeader(title)
@@ -503,6 +806,19 @@ function UDCustomHTML(content) {
         this.universal = deepBindFunctions(universaloperations, this)
     } else {
         return new UDCustomHTML(content);
+    }
+}
+
+function UDImageNode(url) {
+    if(this instanceof UDImageNode) {
+        this.url = url
+        this.element = document.createElement("img")
+        this.element.src = url
+        rendercontext.append(this.element)
+        this.style = deepBindFunctions(styleoperations, this)
+        this.universal = deepBindFunctions(universaloperations, this)
+    } else {
+        return new UDImageNode(url);
     }
 }
 
@@ -830,3 +1146,35 @@ function StateVar(content) {
         return new StateVar(content);
     }
 }
+
+function createUDComponent(name, definition) {
+    function UDComponent(...args) {
+        if (this instanceof UDComponent) {
+            this.element = document.createElement(name);
+            this.oldrc = rendercontext;
+            rendercontext = this.element;
+            definition.apply(this, args);
+            rendercontext = this.oldrc;
+            this.style = deepBindFunctions(styleoperations, this);
+            this.universal = deepBindFunctions(universaloperations, this);
+        } else {
+            return new UDComponent(...args);
+        }
+    }
+
+    return UDComponent;
+}
+
+// Example usage:
+// const UDCard = createUDComponent("udcard", function (title, content) {
+//     UDVerStack(() => {
+//         UDHeader(title);
+//         UDInnerPadding(() => {
+//             UDTextNode(content);
+//         });
+//     });
+// });
+
+// Usage in code:
+// const card = UDCard("Card Title", "This is the card content.");
+// rendercontext.append(card.element);
