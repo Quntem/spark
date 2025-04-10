@@ -89,12 +89,6 @@ var headertest = new UIDrawView(() => {
         // .header.leading(() => UDIconNode("navigation"))
         .header.leading(() => {
             sidebartoggle.headerinst = sidebartoggle.header()
-            // UDImageNode("src/images/takeoff.png")
-            //     .style.height(20)
-            //     .style.width("auto")
-            //     .universal.elementclick(() => {
-            //         $(splitview.side1el).toggle()
-            //     })
         })
         .trailing(() => UDIconNode("navigation"))
         // .headerstyle("min")
