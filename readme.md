@@ -1,7 +1,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/Quntem/spark?style=for-the-badge)
 ![GitHub Release](https://img.shields.io/github/v/release/Quntem/spark?include_prereleases&display_name=tag&style=for-the-badge)
 
-### This repository shares between Spark Framework and UIDraw.
+### This repository is shared between the Spark Framework and UIDraw.
 
 # Overview
 ## What is Spark Framework?
@@ -60,7 +60,7 @@ var librarypage = new UIDrawView(() => {
     .title("Library")
 })
 
-//finally render the view to the browser
+// Finally, render the view to the browser.
 newview.render()
 ```
 
@@ -107,7 +107,7 @@ Some modifiers may take JS code as a parameter.
         })
 ```
 
-### Rendering
+### Rendering with UIDraw
 
 To render the UI, you must use a ```UIDrawView```, and then render it when the page loads.
 
@@ -116,7 +116,7 @@ To render the UI, you must use a ```UIDrawView```, and then render it when the p
         Text("demo")
     })
 
-    // You don't need to wait until the page is loaded, but it'xs recomended.
+    // You don't need to wait until the page is loaded, but it's recommended to do so.
     window.addEventListener("load" => {
         mainView.render()
     })
@@ -126,7 +126,9 @@ To render the UI, you must use a ```UIDrawView```, and then render it when the p
 
 ### Common Usage
 
-hey look i need to go right now i'll fill this section in when im back ok go look here if you're desperate -> [not virus](https://gist.github.com/OscarMayReal/406c9d84f02718b45b1fccb0abab9953#common-usage)
+We’re still working on this section of the documentation. Take a look at [this document](https://gist.github.com/OscarMayReal/406c9d84f02718b45b1fccb0abab9953#common-usage) for now.
 
 ## Installation
-Create a new project with the Spark Framework by using ```npx create-spark-app```.
+To create a new project with the Spark Framework. Run ```npx create-spark-app```.
+
+> More information will be given soon!
