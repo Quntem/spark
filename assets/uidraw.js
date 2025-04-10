@@ -78,6 +78,7 @@ class UIDrawComponent {
                 this.bindedstateval = statevar.content;
                 statevar.bindelement(this);
                 this.render();
+                return this
             };
         }
 
@@ -989,6 +990,7 @@ function UDTextBox(placeholder) {
                     statevar.update(this.element.value)
                 }, 10);
             })
+            return this
         }
         this.style = deepBindFunctions(styleoperations, this)
         this.universal = deepBindFunctions(universaloperations, this)
