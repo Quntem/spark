@@ -302,13 +302,13 @@ var styleoperations = {
         },
         bottomRight: function(val) {
             if (typeof val === "number") {
-                this.element.style.BorderBottomRightRadius = val + "px"
+                this.element.style.borderBottomRightRadius = val + "px"
                 return this
             } else if (typeof val === "string") {
-                this.element.style.BorderBottomRightRadius = val
+                this.element.style.borderBottomRightRadius = val
                 return this
             } else if (val == undefined) {
-                return this.element.style.BorderBottomRightRadius
+                return this.element.style.borderBottomRightRadius
             }
         },
     },
