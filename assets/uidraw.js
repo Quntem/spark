@@ -289,7 +289,7 @@ var styleoperations = {
                 return this.element.style.bordertopRightRadius
             }
         },
-        BottomLeft: function(val) {
+        bottomLeft: function(val) {
             if (typeof val === "number") {
                 this.element.style.borderBottomLeftRadius = val + "px"
                 return this
