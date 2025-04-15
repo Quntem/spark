@@ -2,6 +2,8 @@ rendercontext = document.getElementById("mainview")
 navigatepos = document.getElementById("mainview")
 
 var latestevent = ""
+var animduration = 100
+var virtualtree = {}
 
 var hash = window.location.hash;
 if (window.location.hash == "") {
@@ -446,7 +448,23 @@ var styleoperations = {
         } else if (val == undefined) {
             return this.element.style.color
         }
-    }
+    },
+    position: function(type) {
+        if (typeof type === "string") {
+            this.element.style.position = type
+            return this
+        } else if (type == undefined) {
+            return this.element.style.position
+        }
+    },
+    display: function(type) {
+        if (typeof type === "string") {
+            this.element.style.display = type
+            return this
+        } else if (type == undefined) {
+            return this.element.style.display
+        }
+    },
 }
 
 var universaloperations = {
@@ -455,6 +473,21 @@ var universaloperations = {
         this.element.addEventListener("click", (event) => {latestevent = event})
         this.element.addEventListener("click", fn)
         return this
+    },
+    customCode: function(code) {
+        code(this)
+        return this
+    },
+    hide: function() {
+        $(this.element).hide()
+        return this
+    },
+    hide: function() {
+        $(this.element).show()
+        return this
+    },
+    visible: function() {
+        return $(this.element).is(":visible")
     }
 }
 
@@ -537,6 +570,9 @@ function UDPopOver(el, binding) {
         binding.bindelement(this)
         this.oldrc = rendercontext
         this.element = document.createElement("popover")
+        this.element.addEventListener("click", () => {
+            this.binding.update(false)
+        })
         this.selfinner = document.createElement("popovercontent")
         rendercontext = this.element
         rendercontext.append(this.selfinner)
@@ -545,12 +581,27 @@ function UDPopOver(el, binding) {
         this.el()
         rendercontext = this.oldrc
         $(this.element).hide()
+        $(this.selfinner).css("top", "150%")
         this.render = function() {
             // console.log(this.binding)
+            console.log(this)
             if (this.binding.content == true) {
                 $(this.element).show()
+                $(this.selfinner).animate({
+                    top: "50%"
+                }, animduration)
+                $(this.element).animate({
+                    backgroundColor: "rgba(0, 0, 0, 0.61)"
+                }, animduration)
             } else {
-                $(this.element).hide()
+                $(this.selfinner).animate({
+                    top: "150%"
+                }, animduration)
+                $(this.element).animate({
+                    backgroundColor: "rgba(0, 0, 0, 0.0)"
+                }, animduration, () => {
+                    $(this.element).hide()
+                })
             }
             return this
         }
@@ -616,6 +667,8 @@ function UDNavView(v) {
         rendercontext = document.createElement("navview")
         this.contentel = rendercontext
         this.element = rendercontext
+        rendercontext.classList.add("navigatepos")
+        rendercontext.classList.add("navigateable-element")
         this.oldrc.append(rendercontext)
         this.contentsrun()
         rendercontext = this.oldrc
@@ -713,7 +766,7 @@ function UDSplitView(s1, s2) {
             rendercontext = this.titleel
             this.header = UDHeader(title)
             rendercontext = this.oldrc
-            this.side1el.prepend(this.titleel)
+            this.s1holderelement.prepend(this.titleel)
             return this
         }
         this.vtitle = function(title) {
@@ -751,8 +804,11 @@ function UDSplitView(s1, s2) {
         this.element.classList.add("navigateable-element")
         this.oldrc.append(this.element)
         rendercontext = document.createElement("splitviews1")
+        this.s1holderelement = document.createElement("splitviews1holder")
         this.side1el = rendercontext
         this.element.append(rendercontext)
+        rendercontext.append(this.s1holderelement)
+        rendercontext = this.s1holderelement
         this.side1()
         rendercontext = document.createElement("splitviews2")
         this.side2el = rendercontext
@@ -807,6 +863,19 @@ function UDCustomHTML(content) {
         this.universal = deepBindFunctions(universaloperations, this)
     } else {
         return new UDCustomHTML(content);
+    }
+}
+
+function UDCustomCSS(content) {
+    if(this instanceof UDCustomCSS) {
+        this.content = content
+        this.element = document.createElement("style")
+        this.element.innerHTML = this.content
+        rendercontext.append(this.element)
+        this.style = deepBindFunctions(styleoperations, this)
+        this.universal = deepBindFunctions(universaloperations, this)
+    } else {
+        return new UDCustomCSS(content);
     }
 }
 

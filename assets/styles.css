@@ -1,5 +1,37 @@
+:root {
+    --color-background: white;
+    --color-background-secondary: #f8f8f8;
+    --color-border: #e4e4e7;
+    --color-text: #666666;
+    --color-highlight: rgb(3, 203, 136);
+    --font-family: Figtree;
+    --font-size-title: 30px;
+    --font-size-title-min: 16px;
+    --font-size-paragraph: 16px;
+    --font-size-h1: 28px;
+    --font-size-h2: 25px;
+    --font-size-h3: 22px;
+    --font-size-listsection: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-background: #121212;
+        --color-background-secondary: #1e1e1e;
+        --color-border: #333333;
+        --color-text: #e0e0e0;
+        --color-highlight: rgb(0, 150, 100);
+    }
+}
+
 * {
     -webkit-tap-highlight-color: transparent;
+}
+
+splitviews1holder {
+    min-width: 275px !important;
+    width: 275px !important;
+    display: block;
 }
 
 popover {
@@ -8,7 +40,7 @@ popover {
     top: 0px;
     left: 0px;
     position: fixed;
-    background-color: #0000009c;
+    background-color: rgba(0, 0, 0, 0.00);
 }
 
 vstack {
@@ -64,7 +96,7 @@ udtitleholder {
         transform: translate(-50%, -50%);
         width: 70vw;
         height: 70vh;
-        background-color: white;
+        background-color: var(--color-background);
         border-radius: 10px;
     }
 }
@@ -72,26 +104,26 @@ udtitleholder {
 splitviews1 {
     height: 100%;
     min-width: 275px;
-    background-color: #f8f8f8;
-    border-right: 1px solid #e4e4e7;
-    overflow: auto;
+    background-color: var(--color-background-secondary);
+    border-right: 1px solid var(--color-border);
+    overflow: hidden;
 }
 
 splitviews2 {
     height: 100%;
     width: 100%;
-    background-color: white;
+    background-color: var(--color-background);
     overflow: auto;
 }
 
 p {
-    font-family: Figtree;
+    font-family: var(--font-family);
 }
 
 navview {
     height: 100%;
     width: 100%;
-    background-color: white;
+    background-color: var(--color-background);
     overflow: auto;
     display: block;
 }
@@ -102,25 +134,25 @@ tabviewbg {
     width: 100%;
     margin: 0px !important;
     padding: 0px !important;
-    background-color: white;
+    background-color: var(--color-background);
 }
 
 tabviewtab {
     min-height: calc(100% - 71px);
     max-height: calc(100% - 71px);
-    overflow:auto;
+    overflow: auto;
     width: 100%;
     margin: 0px !important;
     padding: 0px !important;
-    background-color: white;
+    background-color: var(--color-background);
     display: none;
 }
 
 tabviewbar {
     height: 70px;
     width: calc(100% - 30px);
-    background-color: white;
-    border-top: 1px solid #e4e4e7;
+    background-color: var(--color-background);
+    border-top: 1px solid var(--color-border);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -156,19 +188,20 @@ splitview {
 
 body {
     margin: 0px;
-    color: #666666;
+    color: var(--color-text);
     user-select: none;
     width: 100vw;
     height: 100dvh;
     position: fixed;
     top: 0px;
     left: 0px;
+    background-color: var(--color-background);
 }
 
 udtitle {
-    font-size: 30px;
+    font-size: var(--font-size-title);
     font-weight: 600;
-    font-family: Figtree;
+    font-family: var(--font-family);
     margin-left: 25px;
     margin-top: 0px;
     display: block;
@@ -176,16 +209,16 @@ udtitle {
 }
 
 udtitlemin {
-    font-size: 16px;
-    font-family: Figtree;
+    font-size: var(--font-size-title-min);
+    font-family: var(--font-family);
     margin-left: 25px;
     display: block;
     font-weight: 600;
 }
 
 udtitlecenter {
-    font-size: 16px;
-    font-family: Figtree;
+    font-size: var(--font-size-title-min);
+    font-family: var(--font-family);
     display: block;
     font-weight: 600;
     width: 100%;
@@ -233,69 +266,70 @@ udbuttonfilled {
     padding: 10px;
     width: fit-content;
     cursor: pointer;
-    background-color: rgb(3, 203, 136);
+    background-color: var(--color-highlight);
     border-radius: 10px;
-    color: white;
+    color: var(--color-background);
 }
 
 udbuttontext {
     padding-left: 10px;
     padding-right: 10px;
-    font-size: 16px;
-    font-family: Figtree;
+    font-size: var(--font-size-paragraph);
+    font-family: var(--font-family);
     display: block;
 }
 
 udnavitemextext {
     padding-left: 15px;
-    font-size: 16px;
-    font-family: Figtree;
+    font-size: var(--font-size-paragraph);
+    font-family: var(--font-family);
     display: block;
 }
 
 .udnavitemextextver {
     padding-left: 0px;
-    font-size: 15px;
-    font-family: Figtree;
+    font-size: var(--font-size-listsection);
+    font-family: var(--font-family);
     display: block;
 }
 
 [textstyle="paragraph"] {
-    font-family: Figtree;
+    font-family: var(--font-family);
+    font-size: var(--font-size-paragraph);
 }
 
 [textstyle="h3"] {
-    font-family: Figtree;
-    font-size: 22px !important;
+    font-family: var(--font-family);
+    font-size: var(--font-size-h3) !important;
     font-weight: 500;
 }
 
 [textstyle="h2"] {
-    font-family: Figtree;
-    font-size: 25px !important;
+    font-family: var(--font-family);
+    font-size: var(--font-size-h2) !important;
     font-weight: 500;
 }
 
 [textstyle="h1"] {
-    font-family: Figtree;
-    font-size: 28px !important;
+    font-family: var(--font-family);
+    font-size: var(--font-size-h1) !important;
     font-weight: 500;
 }
 
 [textstyle="listsection"] {
-    font-family: Figtree;
+    font-family: var(--font-family);
     margin-top: 25px;
     margin-left: 25px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--font-size-listsection);
 }
 
 @media only screen and (max-width: 600px) {
     splitviews1 {
         max-height: 100%;
         min-width: 100%;
-        background-color: #eeeeee;
-        border-right: 1px solid #e4e4e7;
+        background-color: var(--color-background-secondary);
+        border-right: 1px solid var(--color-border);
         position: absolute;
     }
     splitview {
@@ -311,7 +345,7 @@ udnavitemextext {
     listsectioninner {
         padding: 15px;
         padding-bottom: 1px;
-        background-color: white;
+        background-color: var(--color-background);
         margin-left: 25px;
         display: block;
         margin-right: 25px;
@@ -322,7 +356,7 @@ udnavitemextext {
         margin-bottom: 14px;
     }
     listsectioninner udnavitemex:not(:last-child) {
-        border-bottom: 1px solid #e4e4e7;
+        border-bottom: 1px solid var(--color-border);
         padding-bottom: 14px;
     }
     popovercontent {
@@ -330,7 +364,7 @@ udnavitemextext {
         bottom: 0px;
         width: 100vw;
         height: 90vh;
-        background-color: white;
+        background-color: var(--color-background);
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
     }
@@ -347,4 +381,3 @@ listsectioninner:empty {
     background-color: #d0d0d0;
     border-radius: 100px;
 }
-  

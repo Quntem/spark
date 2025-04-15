@@ -123,6 +123,8 @@ var betest_navtest = new UIDrawView(() => {
         })
 })
 
+var showpopup = StateVar(false)
+
 var mainView = new UIDrawView(() => {
     splitview = UDSplitView(() => {
         UDNavItem("Server Functions", "server")
@@ -147,8 +149,18 @@ var mainView = new UIDrawView(() => {
         .title("Testing App")
         .header.leading(() => {
             sidebartoggle.sidebarinst = sidebartoggle.sidebar()
+                UDIconNode("star")
+                    .universal.elementclick(() => {
+                        showpopup.update(true)
+                    })
         })
         // .header.headerstyle("min")
+    UDPopOver(() => {
+        UDTextNode("Test")
+            .universal.elementclick(() => {
+                showpopup.update(false)
+            })
+    }, showpopup)
 })
 
 window.onload = () => {
@@ -185,9 +197,15 @@ sidebartoggle.sidebar = new UIDrawComponent(() => {
     if($("splitviews1").is(":visible")) {
         UDIconNode("panel-left")
             .universal.elementclick(() => {
-                $("splitviews1").hide()
-                sidebartoggle.sidebarinst.render()
-                sidebartoggle.headerinst.render()
+                $("splitviews1").animate({
+                    width: 0,
+                    minWidth: 0,
+                    maxWidth: 0
+                }, animduration, () => {
+                    $("splitviews1").hide()
+                    sidebartoggle.sidebarinst.render()
+                    sidebartoggle.headerinst.render()
+                })
             })
     }
 }, {
@@ -202,6 +220,12 @@ sidebartoggle.header = new UIDrawComponent(() => {
                 $("splitviews1").show()
                 sidebartoggle.sidebarinst.render()
                 sidebartoggle.headerinst.render()
+                $("splitviews1").animate({
+                    width: 275,
+                    minWidth: 275,
+                    maxWidth: 275
+                }, animduration, () => {
+                })
             })
     }
 }, {
