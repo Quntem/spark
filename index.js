@@ -75,7 +75,7 @@ fs.watch(("./src/backend"), (eventType, fileName) => {
 
 app.use(express.json())
 
-app.get("/serverfunction/:fnname(*)", (req, res) => {
+app.post("/serverfunction/:fnname(*)", (req, res) => {
     const fnname = req.params.fnname;
 
     

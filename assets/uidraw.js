@@ -1184,7 +1184,15 @@ var sparkutils = {
     },
     serverfunctions: {
         call: async function(name, input) {
-            res = await fetch("serverfunction/" + name)
+            var obj = {  
+                method: 'POST',
+                headers: {
+                    "Accept":"application/json", 
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify(input)
+            };
+            res = await fetch("serverfunction/" + name, obj)
             var resdata = ""
             resdatatxt = await res.text()
             try {
