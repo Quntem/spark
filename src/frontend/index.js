@@ -66,10 +66,12 @@ var headertest = new UIDrawView(() => {
                     })
             })
                 .gap(10)
-            celement = MyComponent(state.content, () => {
-                UDButton("button title")
-            })
-                .bindstate(state)
+            window.countstate = StateVar(0)
+            window.celement = MyComponent()
+                .universal.customCode((el) => {
+                    console.log(el)
+                })
+                .bindstate(countstate)
             UDVerStack(() => {
 
             })
@@ -169,14 +171,20 @@ window.onload = () => {
 
 //define the custom component
 
-var MyComponent = new UIDrawComponent((title, component) => {
+var MyComponent = new UIDrawComponent(() => {
     UDVerStack(() => {
-        UDTextNode(state.content)
-        UDHorStack(component)
-            .gap(10)
+        statecont = this.state
+        console.log("rendered")
+        console.log(this.state)
+        UDTextNode(this.state.content)
+        UDButton("button title")
+            .onclick(() => {
+                console.log("clicked")
+                console.log(statecont)
+                statecont.update(statecont.content + 1)
+            })
     })
 }, {
-    params: 2,
     type: "stateful"
 })
 

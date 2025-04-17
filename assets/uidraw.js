@@ -3,7 +3,6 @@ navigatepos = document.getElementById("mainview")
 
 var latestevent = ""
 var animduration = 100
-var virtualtree = {}
 
 var hash = window.location.hash;
 if (window.location.hash == "") {
@@ -1235,17 +1234,3 @@ function createUDComponent(name, definition) {
 
     return UDComponent;
 }
-
-// Example usage:
-// const UDCard = createUDComponent("udcard", function (title, content) {
-//     UDVerStack(() => {
-//         UDHeader(title);
-//         UDInnerPadding(() => {
-//             UDTextNode(content);
-//         });
-//     });
-// });
-
-// Usage in code:
-// const card = UDCard("Card Title", "This is the card content.");
-// rendercontext.append(card.element);
