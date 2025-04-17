@@ -93,7 +93,9 @@ app.get("/serverfunction/:fnname(*)", (req, res) => {
                     "SendText": function(response) {
                         res.send(response)
                     },
-                }
+                },
+                req: req,
+                res: res,
             }
             el.fn(sf);
         }

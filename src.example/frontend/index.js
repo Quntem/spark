@@ -66,10 +66,12 @@ var headertest = new UIDrawView(() => {
                     })
             })
                 .gap(10)
-            celement = MyComponent(state.content, () => {
-                UDButton("button title")
-            })
-                .bindstate(state)
+            window.countstate = StateVar(0)
+            window.celement = MyComponent()
+                .universal.customCode((el) => {
+                    console.log(el)
+                })
+                .bindstate(countstate)
             UDVerStack(() => {
 
             })
@@ -123,6 +125,8 @@ var betest_navtest = new UIDrawView(() => {
         })
 })
 
+var showpopup = StateVar(false)
+
 var mainView = new UIDrawView(() => {
     splitview = UDSplitView(() => {
         UDNavItem("Server Functions", "server")
@@ -147,8 +151,18 @@ var mainView = new UIDrawView(() => {
         .title("Testing App")
         .header.leading(() => {
             sidebartoggle.sidebarinst = sidebartoggle.sidebar()
+                UDIconNode("star")
+                    .universal.elementclick(() => {
+                        showpopup.update(true)
+                    })
         })
         // .header.headerstyle("min")
+    UDPopOver(() => {
+        UDTextNode("Test")
+            .universal.elementclick(() => {
+                showpopup.update(false)
+            })
+    }, showpopup)
 })
 
 window.onload = () => {
@@ -157,14 +171,20 @@ window.onload = () => {
 
 //define the custom component
 
-var MyComponent = new UIDrawComponent((title, component) => {
+var MyComponent = new UIDrawComponent(() => {
     UDVerStack(() => {
-        UDTextNode(state.content)
-        UDHorStack(component)
-            .gap(10)
+        statecont = this.state
+        console.log("rendered")
+        console.log(this.state)
+        UDTextNode(this.state.content)
+        UDButton("button title")
+            .onclick(() => {
+                console.log("clicked")
+                console.log(statecont)
+                statecont.update(statecont.content + 1)
+            })
     })
 }, {
-    params: 2,
     type: "stateful"
 })
 
@@ -185,9 +205,15 @@ sidebartoggle.sidebar = new UIDrawComponent(() => {
     if($("splitviews1").is(":visible")) {
         UDIconNode("panel-left")
             .universal.elementclick(() => {
-                $("splitviews1").hide()
-                sidebartoggle.sidebarinst.render()
-                sidebartoggle.headerinst.render()
+                $("splitviews1").animate({
+                    width: 0,
+                    minWidth: 0,
+                    maxWidth: 0
+                }, animduration, () => {
+                    $("splitviews1").hide()
+                    sidebartoggle.sidebarinst.render()
+                    sidebartoggle.headerinst.render()
+                })
             })
     }
 }, {
@@ -202,6 +228,12 @@ sidebartoggle.header = new UIDrawComponent(() => {
                 $("splitviews1").show()
                 sidebartoggle.sidebarinst.render()
                 sidebartoggle.headerinst.render()
+                $("splitviews1").animate({
+                    width: 275,
+                    minWidth: 275,
+                    maxWidth: 275
+                }, animduration, () => {
+                })
             })
     }
 }, {
