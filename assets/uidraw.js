@@ -36,8 +36,13 @@ class UIDrawView {
 
     navigateto() {
         // navigatepos.style.left = 0
-        navigatepos = $(latestevent.srcElement).closest(".navigateable-element").find(".navigatepos")[0]
-        navigatepos.innerHTML = ""
+        try {
+            navigatepos = $(latestevent.srcElement).closest(".navigateable-element").find(".navigatepos")[0]
+            navigatepos.innerHTML = ""
+        } catch {
+            navigatepos = $(latestevent.srcElement).closest(".navigateable-element")[0]
+            navigatepos.innerHTML = ""
+        }
         this.oldrc = rendercontext
         rendercontext = navigatepos
         this.view()
