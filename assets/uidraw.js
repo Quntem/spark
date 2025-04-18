@@ -578,6 +578,9 @@ function UDPopOver(el, binding) {
             this.binding.update(false)
         })
         this.selfinner = document.createElement("popovercontent")
+        this.selfinner.addEventListener("click", (event) => {
+            event.stopPropagation()
+        })
         rendercontext = this.element
         rendercontext.append(this.selfinner)
         rendercontext = this.selfinner
