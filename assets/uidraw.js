@@ -1054,6 +1054,9 @@ function UDTextBox(placeholder) {
         this.element = document.createElement("input")
         this.element.setAttribute("placeholder", this.placeholder)
         rendercontext.append(this.element)
+        this.render = function() {
+            this.element.value = this.bindedvar.content
+        }
         this.onchange = function(fn) {
             console.log("onchange is now set")
             this.element.addEventListener("change", fn)
@@ -1061,6 +1064,7 @@ function UDTextBox(placeholder) {
         }
         this.bindstate = function(statevar) {
             this.bindedvar = statevar
+            this.element.value = this.bindedvar.content
             this.element.addEventListener("keydown", () => {
                 setTimeout(() => {
                     statevar.update(this.element.value)
