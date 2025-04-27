@@ -1065,6 +1065,7 @@ function UDTextBox(placeholder) {
         this.bindstate = function(statevar) {
             this.bindedvar = statevar
             this.element.value = this.bindedvar.content
+            this.bindedvar.bindelement(this)
             this.element.addEventListener("keydown", () => {
                 setTimeout(() => {
                     statevar.update(this.element.value)
