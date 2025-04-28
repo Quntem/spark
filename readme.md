@@ -107,6 +107,32 @@ Some modifiers may take JS code as a parameter.
         })
 ```
 
+### Adding Classes
+You can add classes by using .customCode which was introduced in version 0.2.1.
+```javascript
+    UDHeader("Header").universal.customCode((el) => {
+        $(el.ement).addClass("classname")
+    })
+```
+
+Then, you can use the class for styling.
+```javascript
+var mainUIDrawView = new UIDrawView(() => {
+    UDCustomCSS(`
+        .classname {
+            color: white !important;
+        }
+    `)
+
+    UDAnchorPoint(() => {
+        UDHeader("Header").universal.customCode((el) => {
+            $(el.ement).addClass("classname")
+        })
+    })
+})
+```
+This will make the text white via CSS.
+
 ### Rendering with UIDraw
 
 To render the UI, you must use a ```UIDrawView```, and then render it when the page loads.
@@ -129,6 +155,6 @@ To render the UI, you must use a ```UIDrawView```, and then render it when the p
 We’re still working on this section of the documentation. Take a look at [this document](https://gist.github.com/OscarMayReal/406c9d84f02718b45b1fccb0abab9953#common-usage) for now.
 
 ## Installation
-To create a new project with the Spark Framework. Run ```npx create-spark-app```.
+To create a new project with the Spark Framework. Run ```npx create-spark-app```. This will create a new folder with your
 
 > More information will be given soon!
